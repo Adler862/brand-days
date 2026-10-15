@@ -164,7 +164,7 @@ byId['q'].listeners['input'][0]();
 // 无匹配时是否优雅降级
 byId['q'].value = 'zzz不可能匹配zzz';
 byId['q'].listeners['input'][0]();
-ok('无匹配时显示提示而不是崩溃', byId['tbody'].children.length === 1,
+ok('无匹配时给出提示且不崩溃', byId['tbody'].children.length === 1,
    '行数=' + byId['tbody'].children.length);
 byId['q'].value = '';
 byId['q'].listeners['input'][0]();

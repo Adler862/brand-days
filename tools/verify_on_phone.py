@@ -59,9 +59,9 @@ def find_adb(explicit: str | None) -> str:
 def query(adb: str, uri: str, projection: str | None = None) -> list[dict]:
     """查询 calendar provider。
 
-    注意：不要随便指定 projection。CalendarContract 的列名是大小写敏感的
-    （例如 allDay 而非 allday），投影里出现一个不存在的列名时，
-    provider 会【静默返回 0 行】而不是报错 —— 很难排查。
+    注意：不要随便指定 projection。CalendarContract 的列名大小写敏感，
+    写错一个列名（例如把 allDay 写成 allday），provider 会【静默返回 0 行】，
+    不报任何错，很难排查。
     因此这里默认不指定投影，拿全部列；投影只用于确有把握的场景。
     """
     cmd = [adb, "shell", "content", "query", "--uri", uri]

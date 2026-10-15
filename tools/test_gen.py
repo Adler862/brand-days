@@ -116,7 +116,7 @@ check(f"nudge 总数 = {expected_nudges}",
 
 print()
 print("   说明：周四（只有肯德基）当晚不发通知，因为周五没有 core 优惠。")
-print("   这是刻意行为——宁可不发，也不要每晚都发一条没有内容的通知。")
+print("   这是有意为之：与其每晚发一条没有内容的通知，不如不发。")
 
 print()
 print("=== 6. 跨年正确性（每月几号的规则最容易在跨年时出错）===")
@@ -174,7 +174,7 @@ def unfold(ics_text: str) -> str:
 _phys = a.decode("utf-8").split("\r\n")
 check("所有物理行 <=75 字节", all(len(ln.encode("utf-8")) <= 75 for ln in _phys),
       f"最长 {max(len(ln.encode('utf-8')) for ln in _phys)} 字节")
-check("确实存在折叠（说明长字段被折过，而不是碰巧都短）",
+check("确实存在折叠（长字段被折过，不是碰巧都短）",
       any(ln[:1] == " " for ln in _phys))
 _unfolded = unfold(a.decode("utf-8"))
 check("展开后结构完好（BEGIN/END 配对）",
