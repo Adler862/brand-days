@@ -26,7 +26,10 @@ uid_domain: "brand-days"
 # ics 对外访问地址。生成器会把它写进网页和 README。
 # 走 jsDelivr 是因为 raw.githubusercontent.com 在国内多数网络不可达。
 # 注意：jsDelivr 有约 12 小时缓存，改数据后不会立刻生效。
-base_url: "https://cdn.jsdelivr.net/gh/<你的GitHub用户名>/brand-days@main"
+#
+# ⚠️ 这个地址一旦对外发布，就成了所有订阅者日历里的地址。
+#    更换 GitHub 用户名会导致所有订阅链接失效。
+base_url: "https://cdn.jsdelivr.net/gh/Adler862/brand-days@main"
 
 # 时区。中国自 1991 年起无夏令时，全年 +0800。
 timezone: "Asia/Shanghai"
