@@ -5,8 +5,33 @@
 >
 > **纯日历，零推送。** 这是本项目最重要的一个取舍，理由见 §3。
 
-状态：`gen.py` 已跑通并实测通过（35 个事件 / 30 天窗口）。网页、`update.ps1`、
-GitHub Actions 尚未开始，见 §7。
+状态：`gen.py` 已跑通；**已在真机（vivo V2324HA / Android 16 / 自带日历）完成端到端验证**。
+网页、`update.ps1`、GitHub Actions 尚未开始，见 §7。
+
+## 0. 真机验证结论（2026-10-15）
+
+| 环节 | 结果 |
+|---|---|
+| ics 生成（时区/VALARM/折叠/序列化） | ✅ 自动校验全部通过 |
+| vivo 系统日历解析 ics 并导入 | ✅ 35 个事件全部入库 |
+| 事件时间与 ics 逐条比对 | ✅ 35/35 一致，**时区无偏移** |
+| 定时提醒 20:00（17 条） | ✅ 全部落在 20:00 |
+| `VALARM` 被解析成系统提醒 | ✅ reminders 表 `minutes=0` |
+| **通知是否真的弹出** | ✅ **实测弹出**，准点、内容正确、带"稍后提醒" |
+
+验证方式：`tools/verify_on_phone.py` 直接读手机日历数据库比对；
+`tools/make_test_ics.py` 现场建一条几分钟后触发的事件，观察系统是否真发通知。
+
+**结论：纯日历方案在 vivo 自带日历上成立。**
+
+Android 端实测记录的坑（写在这里省得再踩）：
+- vivo 把**全天事件**存成当天 `08:00`（ics 里是 `00:00`）——正常，全天事件本无时刻。
+- `CalendarContract` 的列名**大小写敏感**：投影里出现不存在的列名（如 `allday` 而非
+  `allDay`）时，provider **静默返回 0 行**而不报错，极难排查。
+- 日历 App 本体（`com.bbk.calendar`）**不在**电池优化白名单里，只白名单了 provider；
+  实测提醒仍能正常触发，故暂不需要额外设置。若后续发现通知偶发不弹，
+  优先去「设置 → 电池 → 后台耗电管理 → 日历 → 允许后台运行」。
+
 
 ---
 
@@ -120,9 +145,11 @@ brand-days/
 │   ├── pending.yaml       待核实线索        -> 永不进日历
 │   └── oneoff.yaml        时效型            -> 只上网页
 └── tools/
-    ├── check_ics.py       ics 结构校验（时区/VALARM/折叠/UID）
-    ├── test_gen.py        周期规则与边界自测
-    └── roundtrip_ics.py   往返解析（模拟客户端导入）
+    ├── check_ics.py         ics 结构校验（时区/VALARM/折叠/UID）
+    ├── test_gen.py          周期规则与边界自测
+    ├── roundtrip_ics.py     往返解析（模拟客户端导入）
+    ├── make_test_ics.py     生成几分钟后触发的测试日历，验证 VALARM 是否会弹
+    └── verify_on_phone.py   读手机日历数据库，与 deals.ics 逐条比对
 ```
 
 ## 6. 关于初始素材（重要）
@@ -155,8 +182,8 @@ brand-days/
 - [ ] 每月扫描 `last_verified` 超 90 天的条目，开 issue 提醒复核
 - [ ] GitHub Actions（可选，本地任务已能覆盖）
 - [ ] README.md（中文主）/ README.en.md
-- [ ] git 初始化与首次提交
-- [ ] 手机端实测：订阅后确认 `VALARM` 在各家 Android 日历上真的会弹
+- [ ] 注册 GitHub 仓库并填 `config.yaml` 里的 `base_url`，push 后用 jsDelivr 订阅
+- [x] ~~手机端实测~~ —— 已完成，见 §0
 
 ## 8. 分发
 
