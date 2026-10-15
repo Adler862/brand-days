@@ -357,7 +357,10 @@ def main(argv=None) -> int:
         page = genhtml.render_html(cfg, offers, pending, oneoff,
                                    matches, start, stats)
         html_path = ROOT / cfg.get("outputs", {}).get("html", "index.html")
-        html_path.write_text(page, encoding="utf-8")
+        # 显式用 LF 写入。不指定 newline 的话，Windows 上会把 \n 转成 \r\n，
+        # 于是生成结果的字节数取决于操作系统，跨平台生成会得到不同文件。
+        with html_path.open("w", encoding="utf-8", newline="\n") as f:
+            f.write(page)
         print(f"[OK] {html_path}  自包含、无外部依赖 | {len(page.encode('utf-8'))} 字节")
 
     return 0
