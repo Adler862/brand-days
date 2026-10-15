@@ -1,0 +1,522 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//brand-days//brand-days//CN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:品牌日提醒（brand-days）
+X-WR-TIMEZONE:Asia/Shanghai
+BEGIN:VTIMEZONE
+TZID:Asia/Shanghai
+BEGIN:STANDARD
+DTSTART:20100101T000000
+TZNAME:CST
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜肯德基
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261016
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261015@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月19日 周一）1 条｜麦当劳
+DTSTART;TZID=Asia/Shanghai:20261018T200000
+DTEND;TZID=Asia/Shanghai:20261018T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261018@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月19日 周一）1 条｜麦当劳
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜麦当劳
+DTSTART;VALUE=DATE:20261019
+DTEND;VALUE=DATE:20261020
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261019@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月20日 周二）1 条｜塔斯汀
+DTSTART;TZID=Asia/Shanghai:20261019T200000
+DTEND;TZID=Asia/Shanghai:20261019T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261019@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月20日 周二）1 条｜塔斯汀
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜塔斯汀
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261020@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月21日 周三）2 条｜必胜客、海底捞
+DTSTART;TZID=Asia/Shanghai:20261020T200000
+DTEND;TZID=Asia/Shanghai:20261020T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261020@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月21日 周三）2 条｜必胜客、海底捞
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 2 条｜必胜客、海底捞
+DTSTART;VALUE=DATE:20261021
+DTEND;VALUE=DATE:20261022
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261021@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月22日 周四）1 条｜肯德基
+DTSTART;TZID=Asia/Shanghai:20261021T200000
+DTEND;TZID=Asia/Shanghai:20261021T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261021@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月22日 周四）1 条｜肯德基
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜肯德基
+DTSTART;VALUE=DATE:20261022
+DTEND;VALUE=DATE:20261023
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261022@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月26日 周一）1 条｜麦当劳
+DTSTART;TZID=Asia/Shanghai:20261025T200000
+DTEND;TZID=Asia/Shanghai:20261025T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261025@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月26日 周一）1 条｜麦当劳
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜麦当劳
+DTSTART;VALUE=DATE:20261026
+DTEND;VALUE=DATE:20261027
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261026@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月27日 周二）1 条｜塔斯汀
+DTSTART;TZID=Asia/Shanghai:20261026T200000
+DTEND;TZID=Asia/Shanghai:20261026T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261026@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月27日 周二）1 条｜塔斯汀
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜塔斯汀
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261027@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月28日 周三）2 条｜必胜客、海底捞
+DTSTART;TZID=Asia/Shanghai:20261027T200000
+DTEND;TZID=Asia/Shanghai:20261027T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261027@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月28日 周三）2 条｜必胜客、海底捞
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 2 条｜必胜客、海底捞
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261028@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（10月29日 周四）1 条｜肯德基
+DTSTART;TZID=Asia/Shanghai:20261028T200000
+DTEND;TZID=Asia/Shanghai:20261028T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261028@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（10月29日 周四）1 条｜肯德基
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜肯德基
+DTSTART;VALUE=DATE:20261029
+DTEND;VALUE=DATE:20261030
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261029@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月2日 周一）1 条｜麦当劳
+DTSTART;TZID=Asia/Shanghai:20261101T200000
+DTEND;TZID=Asia/Shanghai:20261101T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261101@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月2日 周一）1 条｜麦当劳
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜麦当劳
+DTSTART;VALUE=DATE:20261102
+DTEND;VALUE=DATE:20261103
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261102@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月3日 周二）1 条｜塔斯汀
+DTSTART;TZID=Asia/Shanghai:20261102T200000
+DTEND;TZID=Asia/Shanghai:20261102T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261102@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月3日 周二）1 条｜塔斯汀
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜塔斯汀
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261103@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月4日 周三）2 条｜必胜客、海底捞
+DTSTART;TZID=Asia/Shanghai:20261103T200000
+DTEND;TZID=Asia/Shanghai:20261103T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261103@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月4日 周三）2 条｜必胜客、海底捞
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 2 条｜必胜客、海底捞
+DTSTART;VALUE=DATE:20261104
+DTEND;VALUE=DATE:20261105
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261104@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月5日 周四）1 条｜肯德基
+DTSTART;TZID=Asia/Shanghai:20261104T200000
+DTEND;TZID=Asia/Shanghai:20261104T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261104@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月5日 周四）1 条｜肯德基
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜肯德基
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261106
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261105@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月8日 周日）2 条｜好想来、赵一鸣零食
+DTSTART;TZID=Asia/Shanghai:20261107T200000
+DTEND;TZID=Asia/Shanghai:20261107T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261107@brand-days
+DESCRIPTION:1. 好想来｜会员日 88 折\n   ・每月 8 号\n   来源
+ ：https://caijing.chinadaily.com.cn/a/202601/30/WS697c1dc7a310942cc499d6f
+ b.html\n2. 赵一鸣零食｜会员日 88 折\n   ・每月 8 号\n   ・
+ 特价商品不参与折扣，并非全场\n   来源：https://www.shaoxi
+ ng.com.cn/xinwen/p/3250289.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月8日 周日）2 条｜好想来、赵一鸣零食
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 2 条｜好想来、赵一鸣零食
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261108@brand-days
+DESCRIPTION:1. 好想来｜会员日 88 折\n   ・每月 8 号\n   来源
+ ：https://caijing.chinadaily.com.cn/a/202601/30/WS697c1dc7a310942cc499d6f
+ b.html\n2. 赵一鸣零食｜会员日 88 折\n   ・每月 8 号\n   ・
+ 特价商品不参与折扣，并非全场\n   来源：https://www.shaoxi
+ ng.com.cn/xinwen/p/3250289.html
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月9日 周一）1 条｜麦当劳
+DTSTART;TZID=Asia/Shanghai:20261108T200000
+DTEND;TZID=Asia/Shanghai:20261108T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261108@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月9日 周一）1 条｜麦当劳
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜麦当劳
+DTSTART;VALUE=DATE:20261109
+DTEND;VALUE=DATE:20261110
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261109@brand-days
+DESCRIPTION:1. 麦当劳｜周一麦麦省，App 领 7 张券\n   ・需在
+ 麦当劳 App 领取\n   ・是领券不是直接半价\n   来源：https
+ ://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月10日 周二）1 条｜塔斯汀
+DTSTART;TZID=Asia/Shanghai:20261109T200000
+DTEND;TZID=Asia/Shanghai:20261109T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261109@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月10日 周二）1 条｜塔斯汀
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜塔斯汀
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261110@brand-days
+DESCRIPTION:1. 塔斯汀｜周二 +1 元双份\n   ・仅堂食 / 小程序
+ 点单\n   ・普通外卖不参与\n   ・需授权“塔斯汀+”小程
+ 序（免费永久会员）\n   来源：https://m.zh.bendibao.com/youhui/
+ 89492.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月11日 周三）2 条｜必胜客、海底捞
+DTSTART;TZID=Asia/Shanghai:20261110T200000
+DTEND;TZID=Asia/Shanghai:20261110T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261110@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月11日 周三）2 条｜必胜客、海底捞
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 2 条｜必胜客、海底捞
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261112
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261111@brand-days
+DESCRIPTION:1. 必胜客｜尖叫星期三，指定品买一送一\n   ・
+ 需会员\n   ・仅指定产品（如 69 元披萨/牛排）\n   来源
+ ：https://www.sohu.com/a/946495199_121123870\n2. 海底捞｜周三会员
+ 日领菜品券\n   ・须消费满 80 元\n   ・毛肚券须满 150 元\
+ n   ・半份菜品五选一\n   来源：http://yc.bendibao.com/news/2025
+ 93/58634.shtm
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:明天（11月12日 周四）1 条｜肯德基
+DTSTART;TZID=Asia/Shanghai:20261111T200000
+DTEND;TZID=Asia/Shanghai:20261111T202000
+DTSTAMP:20261014T160000Z
+UID:brand-days-nudge-20261111@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:明天（11月12日 周四）1 条｜肯德基
+TRIGGER:P0D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:今日优惠 1 条｜肯德基
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+DTSTAMP:20261014T160000Z
+UID:brand-days-digest-20261112@brand-days
+DESCRIPTION:1. 肯德基｜疯狂星期四（9:30-23:00）\n   ・堂食 9:
+ 30-23:00，外送 9:15-22:44\n   ・单品 9.9 / 19.9 / 29.9 元，全国
+ 限量\n   来源：https://m.bendibao.com/show954854.html
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

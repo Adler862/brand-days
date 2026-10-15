@@ -1,0 +1,46 @@
+# brand-days 生成配置
+# 改这里不需要动代码。
+
+# 生成未来多少天的日历事件。
+# 30 天意味着约每月重新生成并推送一次。
+window_days: 30
+
+# 日历起点。null = 从今天开始；也可写死日期便于复现，例如 2026-10-15
+start_date: null
+
+# 晚 nudges：每晚这个时刻提醒“明天有什么”。
+# 这是主动通知的唯一来源，必须落在用户还醒着且能决策的时间。
+remind_at: "20:00"
+
+# 定时提醒事件的持续时长（分钟）。仅影响日历里那一条的显示长度。
+nudge_duration_minutes: 20
+
+# 是否生成“当天全天摘要”事件（兜底可见性：
+# 万一手机不弹 VALARM 通知，翻日历仍能看到今天有什么）。
+digest: true
+
+# 日历显示名与 UID 域名
+calendar_name: "品牌日提醒（brand-days）"
+uid_domain: "brand-days"
+
+# ics 对外访问地址。生成器会把它写进网页和 README。
+# 走 jsDelivr 是因为 raw.githubusercontent.com 在国内多数网络不可达。
+# 注意：jsDelivr 有约 12 小时缓存，改数据后不会立刻生效。
+base_url: "https://cdn.jsdelivr.net/gh/<你的GitHub用户名>/brand-days@main"
+
+# 时区。中国自 1991 年起无夏令时，全年 +0800。
+timezone: "Asia/Shanghai"
+
+# VTIMEZONE 定义的覆盖年限。必须远大于 window_days 所能到达的年份，
+# 否则远期事件会没有时区定义。此处给到 2050 作为安全余量。
+tz_last_year: 2050
+
+# 各 tier 是否进入日历。
+# core      = 我会为它改变行为，进日历
+# extended  = 留在数据和网页里，不进日历（避免噪音导致整个日历被静音）
+tiers_in_calendar:
+  - core
+
+outputs:
+  ics: "deals.ics"
+  html: "index.html"

@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 系统
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 注意：deals.ics 是【有意提交】的生成物 —— jsDelivr 需要它来分发，
+# 不要把它加进忽略列表。

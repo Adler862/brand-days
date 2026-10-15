@@ -1,0 +1,7 @@
+# brand-days 依赖
+# 安装：pip install -r requirements.txt
+# 国内建议加镜像：pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+PyYAML>=6.0          # 读取 data/*.yaml
+icalendar>=6.0       # 生成 .ics（VTIMEZONE / VALARM / 行折叠）
+tzdata>=2024.1       # Windows 上 zoneinfo 需要它来解析 Asia/Shanghai

@@ -1,0 +1,124 @@
+# brand-days 待核实区
+#
+# 这里的条目【不会】生成日历事件，也不会出现在“已确认”列表里。
+# 它们是从微信素材收集来、但本轮网上核查【未找到可靠来源】或【与素材不符】的条目。
+#
+# 用途有两个：
+#   1. 保留线索，不因为“查不到”就丢掉信息
+#   2. 作为一份待办清单 —— 你在线下（真的去了那家店）或小程序里确认后，
+#      把该条移到 ../offers.yaml 并把 confidence 改成 verified
+#
+# 字段：
+#   candidate_day  素材里声称的周期（未经证实，仅作线索）
+#   reason         为什么没进 offers.yaml
+#   source         素材出处或查到的部分信息
+#
+# ⚠️ 背景：本文件的条目源头是 2024-11-11 一篇自媒体汇总
+#    (https://shenghuochangshi.com/articles/ge-da-pin-pai-huo-dong-ri)
+#    该文被多次转载，本身含大量抄录错误。核查已确认其中若干条为误传。
+
+- brand: 益禾堂
+  claim: 会员日半价 / 买一送一
+  candidate_day: 每月 18 号
+  reason: 素材把会员日写成“周一、周二”，核查显示会员日是每月 18 号，但官方渠道未直接确认
+  source: "https://m.douban.com/group/topic/201531430/"
+  todo: 打开益禾堂小程序看 18 号活动公告
+
+- brand: 茶百道
+  claim: 周四全场 88 折 / 周三免费中杯升大杯
+  candidate_day: 每月 23 号
+  reason: “周四 88 折”未获证实；查到的是每月 23 号“超级会员日”（口令答题抢券）
+  source: "http://haikou.bendibao.com/youhui/2025623/75084.shtm"
+  todo: 核对茶百道小程序 23 号活动
+
+- brand: 汉堡王
+  claim: 周三国王日 9.9 元狠霸王 / 双层芝士牛堡
+  candidate_day: 周三
+  reason: 周三是真的，但 9.9 元单品未获证实；2026-09 口径已变为 29.4 元组合送到家
+  source: "https://post.smzdm.com/p/ad796e7k/"
+  todo: 打开汉堡王 App 看周三实际价格
+
+- brand: 德克士
+  claim: 逢八会员日，加一元得双份
+  candidate_day: 8 / 18 / 28 号
+  reason: 两个转载版本口径不一（一版写 8/18/28，另一版只写 18 号买一送一），均非官方
+  source: "https://www.vgover.com/news/209830"
+  todo: 核对德克士官方渠道
+
+- brand: 华莱士
+  claim: 周五会员日买一送一
+  candidate_day: 周五
+  reason: 未查到官方或权威媒体确认，仅见自媒体聚合
+  source: 未查到
+  todo: 到店或看华莱士小程序
+
+- brand: 袁记串串香
+  claim: 吃一签送一签
+  candidate_day: 17 或 18 号（素材自己都不确定）
+  reason: 活动名“吃一签，送一签”已在公众号推文确认，但具体日期未查到（正文被微信验证码拦截）
+  source: "https://mp.weixin.qq.com/s?__biz=MzI1MjM2MTU1NA==&mid=2247600668&idx=2&sn=4486c2b8f6f1ef2415244dbb454f6dc3"
+  todo: 翻该公众号历史推文确认日期；注意勿与“袁记云饺”混淆（两个品牌）
+
+- brand: 罗森
+  claim: 周一 15-5 / 周二满 20-4 / 周二周六酸奶鲜奶三件 55 折
+  candidate_day: 周一 / 周二 / 周六
+  reason: 三条均未证实。罗森中国【无全国统一会员日】，优惠由各区域公司自行制定（如重庆罗森为周一咖啡 6 折、周三零食满 30-10）
+
+- brand: 古茗
+  claim: 每月 20 号会员日
+  candidate_day: 每月 20 号
+  reason: 未查到官方确认，仅见自媒体聚合
+
+- brand: 零食很忙
+  claim: 每月 7 号会员日
+  candidate_day: 每月 7 号（存疑，可能为 8 号）
+  reason: 未确认。仅见微博标题“零食很忙 88 会员日全场 8.8 折”，正文无法读取；与赵一鸣同属鸣鸣很忙集团
+
+- brand: 零食有鸣
+  claim: 会员日 6 号
+  candidate_day: 每月 6 号
+  reason: 未查到任何可靠来源
+
+# ---- 以下为“完全查无此据”的条目 ----
+# 大概率是那篇自媒体汇总编造、或活动早已消失。
+# 保留在此仅作线索；如果线下确认不存在，直接删除即可。
+
+- brand: 察理王子
+  claim: 第二杯半价
+  candidate_day: 周二（素材把它排在了周三标题下，自相矛盾）
+  reason: 未查到该品牌任何周期性活动的可靠来源
+
+- brand: 阿嫲手作
+  claim: 免配送费
+  candidate_day: 周二（素材里同一天重复出现了两次）
+  reason: 未查到官方周期规则；素材的重复本身就是抄录错误的证据
+
+- brand: 茶颜悦色
+  claim: 会员日
+  candidate_day: 周三
+  reason: 未查到可靠来源
+
+- brand: 蛙小侠
+  claim: 会员日
+  candidate_day: 周二
+  reason: 未查到可靠来源
+
+- brand: 王多鱼
+  claim: 会员日
+  candidate_day: 周二
+  reason: 未查到可靠来源，品牌本身也未能确认
+
+- brand: 蜜雪冰城
+  claim: 周一 3.99 元 / 周三满 12-2
+  candidate_day: 周一 / 周三
+  reason: 未查到官方固定周期活动，仅见区域性合作（如宁夏青年卡 1 元）
+
+- brand: 喜茶
+  claim: 周一免配送费 / 周二免费小料
+  candidate_day: 周一 / 周二
+  reason: 未查到官方确认；仅见三份互相抄袭的自媒体聚合
+
+- brand: 库迪
+  claim: （素材未给具体说法）
+  candidate_day: 未给
+  reason: 本轮检索无结果

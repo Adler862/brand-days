@@ -1,0 +1,74 @@
+# brand-days 时效型优惠
+#
+# ⚠️ 本文件的条目【不会】生成日历事件，只在网页上展示。
+#
+# 原因：这类优惠是“到点抢券”型（限时段、限名额），日历事件无法在抢券前叫你，
+#       提醒了也是过期的信息。既然本项目采用纯日历方案（零推送），
+#       这类信息的最合适归宿就是“打开网页看一眼”。
+#
+# 字段：
+#   expires_at  可选。过期后网页上标记为“已过期”，不再作为有效信息展示。
+#               留空表示长期有效或未确认结束日期。
+#   confidence  verified | unverified（unverified 在网页上会明确标注）
+
+- brand: 星巴克
+  offer: 蛋糕三明治 7 折，满 30 送美式
+  conditions:
+    - 需学生认证
+    - 叠小助手 30-10 的券
+  confidence: verified
+  source: 微信素材（未逐条复核）
+  verified_at: 2026-10-15
+  expires_at: null
+  notes: 建议在星巴克 App 内确认当前口径
+
+- brand: 瑞幸
+  offer: 9.9 元券
+  conditions:
+    - 券驱动、动态调整，非固定周期活动
+  confidence: verified
+  source: "https://zgcsb.com/news/xiaoFei/2025-06/03/a_596151.html"
+  verified_at: 2026-10-15
+  expires_at: null
+  notes: 官方曾否认降价，称为随机发券。不要当成“每天都有”
+
+- brand: 饿了么
+  offer: 整点领红包，40-20 券 / 5 折
+  conditions:
+    - 整点开抢，名额有限
+    - 周末口径与工作日不同
+  confidence: unverified
+  source: 微信素材
+  verified_at: 2026-10-15
+  expires_at: null
+  notes: 未复核，抢券机制随时调整
+
+- brand: 美团
+  offer: 16 号搜神券 / 18 号满 36-18 / 每天 10:00 与 14:00 有 20-10
+  conditions:
+    - 需学生认证才能抢 20-10
+  confidence: unverified
+  source: 微信素材
+  verified_at: 2026-10-15
+  expires_at: null
+
+- brand: 古茗
+  offer: 12 点公众号抢免单券，另有买一送一
+  conditions:
+    - 需在公众号内抢，名额极少
+  confidence: unverified
+  source: 微信素材
+  verified_at: 2026-10-15
+  expires_at: null
+
+- brand: 海底捞
+  offer: 大学生 69 折（其他时段 88 折）
+  conditions:
+    - 周一至周五 14:00-17:00 及 22:00 后为 69 折
+    - 其他时间 88 折
+    - 需大学生身份
+  confidence: unverified
+  source: 微信素材
+  verified_at: 2026-10-15
+  expires_at: null
+  notes: 本条是“绑时段”的典型，未来若要做条件型提醒需要单独的时段字段

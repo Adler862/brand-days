@@ -1,0 +1,120 @@
+# brand-days 核心数据：周期性优惠
+#
+# 字段说明：
+#   id          稳定标识，改名会导致日历里出现重复事件，尽量别动
+#   brand       品牌名
+#   offer       优惠内容（会显示在日历标题里，写短）
+#   recur       周期规则
+#                 weekly  -> days: [mon, tue, ...]
+#                 monthly -> days: [8]  （每月几号）
+#   window      可选，一天内的时段。绑时段的优惠必须写，否则日历提醒时刻会错
+#   start       可选，规则生效起始日。留空表示很久以前就已生效
+#   tier        core     = 进日历（我会为它改变行为）
+#               extended = 只留在数据和网页里，不进日历
+#   confidence  verified | unverified（unverified 一律不进日历）
+#   conditions  前提条件/限制，务必如实写，否则用户白跑一趟
+#   source      哪看到的（URL 或“官方小程序”）
+#   verified_at 上次本人确认的日期。超过 90 天会被 update 脚本提示复核
+#   notes       备注
+
+- id: kfc-crazy-thursday
+  brand: 肯德基
+  offer: 疯狂星期四
+  recur: { type: weekly, days: [thu] }
+  window: { start: "09:30", end: "23:00" }
+  tier: core
+  confidence: verified
+  conditions:
+    - 堂食 9:30-23:00，外送 9:15-22:44
+    - 单品 9.9 / 19.9 / 29.9 元，全国限量
+  source: "https://m.bendibao.com/show954854.html"
+  verified_at: 2026-10-15
+  notes: 当天最知名的周期性优惠，日历里的锚点条目
+
+- id: mcdonalds-monday
+  brand: 麦当劳
+  offer: 周一麦麦省，App 领 7 张券
+  recur: { type: weekly, days: [mon] }
+  tier: core
+  confidence: verified
+  conditions:
+    - 需在麦当劳 App 领取
+    - 是领券不是直接半价
+  source: "https://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit"
+  verified_at: 2026-10-15
+  notes: 原始素材写成“会员日”，实际是周一发券，力度描述已修正
+
+- id: pizzahut-scream-wednesday
+  brand: 必胜客
+  offer: 尖叫星期三，指定品买一送一
+  recur: { type: weekly, days: [wed] }
+  tier: core
+  confidence: verified
+  conditions:
+    - 需会员
+    - 仅指定产品（如 69 元披萨/牛排）
+  source: "https://www.sohu.com/a/946495199_121123870"
+  verified_at: 2026-10-15
+
+- id: tastien-tuesday
+  brand: 塔斯汀
+  offer: 周二 +1 元双份
+  recur: { type: weekly, days: [tue] }
+  tier: core
+  confidence: verified
+  conditions:
+    - 仅堂食 / 小程序点单
+    - 普通外卖不参与
+    - 需授权“塔斯汀+”小程序（免费永久会员）
+  source: "https://m.zh.bendibao.com/youhui/89492.shtm"
+  verified_at: 2026-10-15
+
+- id: haidilao-wednesday
+  brand: 海底捞
+  offer: 周三会员日领菜品券
+  recur: { type: weekly, days: [wed] }
+  tier: core
+  confidence: verified
+  conditions:
+    - 须消费满 80 元
+    - 毛肚券须满 150 元
+    - 半份菜品五选一
+  source: "http://yc.bendibao.com/news/202593/58634.shtm"
+  verified_at: 2026-10-15
+
+- id: haoxianglai-8th
+  brand: 好想来
+  offer: 会员日 88 折
+  recur: { type: monthly, days: [8] }
+  tier: core
+  confidence: verified
+  conditions:
+    - 每月 8 号
+  source: "https://caijing.chinadaily.com.cn/a/202601/30/WS697c1dc7a310942cc499d6fb.html"
+  verified_at: 2026-10-15
+
+- id: zhaoyiming-8th
+  brand: 赵一鸣零食
+  offer: 会员日 88 折
+  recur: { type: monthly, days: [8] }
+  tier: core
+  confidence: verified
+  conditions:
+    - 每月 8 号
+    - 特价商品不参与折扣，并非全场
+  source: "https://www.shaoxing.com.cn/xinwen/p/3250289.html"
+  verified_at: 2026-10-15
+
+- id: dominoes-tue-thu
+  brand: 达美乐
+  offer: 接二连三四，原价比萨七折
+  recur: { type: weekly, days: [tue, wed, thu] }
+  tier: extended
+  confidence: verified
+  conditions:
+    - 仅酥香烤盘 / 经典手拍 / 轻巧薄脆 三种饼底
+    - 不与其他优惠同享
+    - 仅“指定城市”参与，需确认本地是否覆盖
+  source: "https://baijiahao.baidu.com/s?for=pc&id=1859811790274406693"
+  verified_at: 2026-10-15
+  notes: 原始素材只写了周二/周三，2026-03-16 起已扩为周二三四
