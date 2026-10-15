@@ -161,9 +161,13 @@ def strip_tz_comment(raw: bytes) -> bytes:
       * 长注释可能被行折叠器拆成多行，续行以单个空格开头，
         所以必须先按 RFC 5545 展开折叠行，否则单行正则匹配不到；
       * 但【展开之后必须重新折叠】—— 直接写出展开后的文本会产生超长行，
-        违反 RFC 5545 的 75 字节上限，某些客户端会解析失败。
+        违反 RFC 5545 的 75 字节上限，某些客户端会解析失败；
+      * 重新拼接时必须【补回末尾换行】—— str.splitlines() 会连同末尾的
+        CRLF 一起吃掉，直接 join 出来的文件以 END:VCALENDAR 结尾而没有换行，
+        不符合 RFC 5545（组件行应以 CRLF 结束），部分严格解析器会报错。
     """
     text = raw.decode("utf-8")
+    had_trailing_newline = text.endswith(("\r\n", "\n"))
     # 1) 展开折叠行（CRLF/LF + 空格 -> 空）
     unfolded = re.sub(r"\r?\n ", "", text)
     # 2) 删除目标注释行
@@ -175,6 +179,9 @@ def strip_tz_comment(raw: bytes) -> bytes:
     )
     # 3) 重新折叠，保持 75 字节上限
     folded = "\r\n".join(_fold_line(ln) for ln in cleaned.splitlines())
+    # 4) 补回末尾换行
+    if had_trailing_newline:
+        folded += "\r\n"
     return folded.encode("utf-8")
 
 

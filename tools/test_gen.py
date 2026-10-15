@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.stdout.reconfigure(encoding="utf-8")
 
 import yaml  # noqa: E402
+from icalendar import Calendar  # noqa: E402
 
 import gen  # noqa: E402
 
@@ -141,7 +142,66 @@ check("不带时段的条目无括号",
       "（" not in gen.offer_line(offers["mcdonalds-monday"]))
 
 print()
-print("=== 8. 数据文件健康度 ===")
+print("=== 8. ics 序列化规范（RFC 5545）===")
+check("文件以 CRLF 结尾（组件行须以 CRLF 结束）", a.endswith(b"\r\n"),
+      f"实际结尾 {a[-20:]!r}")
+check("不存在裸 LF（所有换行都是 CRLF）",
+      a.count(b"\n") == a.count(b"\r\n"),
+      f"LF={a.count(b'\n')} CRLF={a.count(b'\r\n')}")
+check("不存在连续 CR", b"\r\r" not in a)
+check("已删除库自动生成的 COMMENT", b"COMMENT:This timezone only works" not in a)
+
+
+def unfold(ics_text: str) -> str:
+    """按 RFC 5545 展开折叠：只删除【后跟空格或制表符】的换行。
+
+    注意不能写成 replace('\\r\\n', '') —— 那会把整份文件拼成一行；
+    也不能写成 replace('\\r\\n ', '') —— 描述里含 \\n 字面量时会错位匹配。
+    """
+    out = []
+    for ln in ics_text.split("\r\n"):
+        if ln[:1] in (" ", "\t") and out:
+            out[-1] += ln[1:]      # 续行：去掉前导空格后接回上一行
+        else:
+            out.append(ln)
+    return "\r\n".join(out)
+
+
+# RFC 5545 的约束是【物理行】<=75 字节。
+# 【逻辑行】长度不受限 —— 这正是折叠机制存在的意义：
+# 一条 206 字节的 DESCRIPTION 会被折成 75+74+59 三个物理行。
+# （曾在这里写错过断言：对展开后的逻辑行判长度，必然误报。）
+_phys = a.decode("utf-8").split("\r\n")
+check("所有物理行 <=75 字节", all(len(ln.encode("utf-8")) <= 75 for ln in _phys),
+      f"最长 {max(len(ln.encode('utf-8')) for ln in _phys)} 字节")
+check("确实存在折叠（说明长字段被折过，而不是碰巧都短）",
+      any(ln[:1] == " " for ln in _phys))
+_unfolded = unfold(a.decode("utf-8"))
+check("展开后结构完好（BEGIN/END 配对）",
+      _unfolded.count("BEGIN:VEVENT") == _unfolded.count("END:VEVENT")
+      and "BEGIN:VCALENDAR" in _unfolded and "END:VCALENDAR" in _unfolded)
+check("展开后能被标准解析器读回（折叠无损）",
+      len(Calendar.from_ical(a).walk("VEVENT")) > 0)
+
+# 折叠函数本身的边界：不得在多字节字符中间切断
+_long = "DESCRIPTION:" + "中文测试" * 30
+_folded = gen._fold_line(_long)
+_phys = _folded.split("\r\n")
+check("折叠长中文行后每物理行都 <=75 字节",
+      all(len(ln.encode("utf-8")) <= 75 for ln in _phys))
+check("折叠后可无损还原（按 RFC 展开 == 原文）",
+      unfold(_folded) == _long)
+check("折叠后除首行外都以空格开头（续行标记）",
+      all(ln.startswith(" ") for ln in _phys[1:]))
+check("短行不做折叠", gen._fold_line("短行") == "短行")
+check("空行不报错", gen._fold_line("") == "")
+check("折叠恰好 75 字节的行不产生多余续行",
+      gen._fold_line("A" * 75) == "A" * 75)
+check("76 字节的 ASCII 行被折成 2 行",
+      len(gen._fold_line("A" * 76).split("\r\n")) == 2)
+
+print()
+print("=== 9. 数据文件健康度 ===")
 pending = load("pending.yaml")
 oneoff = load("oneoff.yaml")
 check(f"pending.yaml 有 {len(pending)} 条待核实线索", len(pending) > 0)
