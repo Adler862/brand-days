@@ -1,0 +1,12 @@
+# 强制 LF。ics 的换行是规范的一部分（RFC 5545 要求 CRLF），
+# 如果 git 在 checkout 时做换行转换，会导致：
+#   1) 别人 clone 后 deals.ics 与我验证过的版本不是同一份字节
+#   2) 生成器的“同日重复生成逐字节一致”保证在别人机器上失效
+# 因此所有文本文件一律 LF，不交给 autocrlf 处理。
+* text=auto eol=lf
+
+# 明确标记为二进制，避免任何形式的换行处理
+*.ics -text
+*.png binary
+*.jpg binary
+*.webp binary
