@@ -306,12 +306,15 @@ def build(
 # ---------------------------------------------------------------- 入口
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description="brand-days: YAML -> deals.ics")
+    ap = argparse.ArgumentParser(description="brand-days: YAML -> deals.ics + index.html")
     ap.add_argument("--config", default=str(ROOT / "config.yaml"))
     ap.add_argument("--offers", default=str(ROOT / "data" / "offers.yaml"))
+    ap.add_argument("--pending", default=str(ROOT / "data" / "pending.yaml"))
+    ap.add_argument("--oneoff", default=str(ROOT / "data" / "oneoff.yaml"))
     ap.add_argument("--window", type=int, default=None, help="覆盖 window_days")
     ap.add_argument("--start", default=None, help="覆盖起始日 YYYY-MM-DD")
-    ap.add_argument("--out", default=None, help="覆盖输出路径")
+    ap.add_argument("--out", default=None, help="覆盖 ics 输出路径")
+    ap.add_argument("--no-html", action="store_true", help="不生成网页")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
 
@@ -334,6 +337,7 @@ def main(argv=None) -> int:
 
     raw, stats = build(cfg, offers, start=start, window_days=window,
                        verbose=args.verbose)
+    stats["window_days_total"] = window
 
     out = Path(args.out or (ROOT / cfg.get("outputs", {}).get("ics", "deals.ics")))
     out.write_bytes(raw)
@@ -341,6 +345,21 @@ def main(argv=None) -> int:
     print(f"[OK] {out}  起始 {start}  窗口 {window} 天")
     print(f"     事件 {stats['events']} 条 | 有内容的天数 {stats['days_with_content']}"
           f" | {stats['bytes']} 字节")
+
+    # ---- 网页 ----
+    if not args.no_html:
+        import genhtml
+
+        pending = load_yaml(Path(args.pending))
+        oneoff = load_yaml(Path(args.oneoff))
+        # 网页要展示"进日历 + 不进日历"的全部条目，
+        # 所以这里不能只用 build() 里筛过的 eligible，得重新算一遍匹配
+        page = genhtml.render_html(cfg, offers, pending, oneoff,
+                                   matches, start, stats)
+        html_path = ROOT / cfg.get("outputs", {}).get("html", "index.html")
+        html_path.write_text(page, encoding="utf-8")
+        print(f"[OK] {html_path}  自包含、无外部依赖 | {len(page.encode('utf-8'))} 字节")
+
     return 0
 
 

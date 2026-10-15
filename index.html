@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>品牌日提醒 · brand-days</title>
+<meta name="description" content="中国大陆品牌会员日 / 周期性优惠的日历订阅，每晚 20:00 提醒次日优惠。">
+<style>
+:root{
+  --bg:#ffffff; --fg:#1a1a1a; --dim:#6b6b6b; --line:#e6e6e6;
+  --card:#fafafa; --accent:#c0392b; --ok:#1f7a4d; --warn:#b7791f;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#16181c; --fg:#e8e8e8; --dim:#9aa0a6; --line:#2c2f35;
+         --card:#1d2025; --accent:#ff6b5e; --ok:#5dd39e; --warn:#e0b050; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; padding:0 16px 64px; background:var(--bg); color:var(--fg);
+  font:15px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",
+       "Hiragino Sans GB","Source Han Sans SC",sans-serif;
+}
+.wrap{max-width:820px;margin:0 auto}
+header{padding:28px 0 8px}
+h1{margin:0 0 6px;font-size:22px;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:13px;margin:0 0 18px}
+h2{font-size:16px;margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+a{color:inherit}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+
+.sub-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sub-box code{flex:1 1 340px;min-width:0;overflow-wrap:anywhere;
+  background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--bg);
+  color:var(--fg);border-radius:6px;padding:7px 12px}
+button:hover{border-color:var(--dim)}
+button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.card{border:1px solid var(--line);border-radius:var(--radius);padding:14px;
+  margin:0 0 10px;background:var(--card)}
+.card.plain{background:transparent}
+.card-head{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.brand{font-weight:600}
+.offer{color:var(--fg)}
+.meta{color:var(--dim);font-size:12.5px}
+.cond{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:13px}
+.cond li{margin:2px 0}
+.src{margin-top:8px;font-size:12px;color:var(--dim);overflow-wrap:anywhere}
+.src a{color:var(--dim)}
+
+.tag{display:inline-block;font-size:11.5px;line-height:1.6;padding:1px 7px;
+  border-radius:99px;border:1px solid var(--line);color:var(--dim);white-space:nowrap}
+.tag.core{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.off{opacity:.55}
+
+.day{border-bottom:1px solid var(--line);padding:10px 0}
+.day:last-child{border-bottom:0}
+.day-head{display:flex;gap:10px;align-items:baseline}
+.day-head b{font-size:15px}
+.day-head .meta{margin-left:auto}
+.empty{color:var(--dim);font-size:13.5px;padding:8px 0}
+
+.searchbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+input[type=search]{flex:1 1 240px;font:inherit;padding:9px 12px;border-radius:8px;
+  border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+input[type=search]:focus{outline:none;border-color:var(--accent)}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-weight:500;font-size:12.5px;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.nowrap{white-space:nowrap}
+
+details{border:1px solid var(--line);border-radius:var(--radius);padding:0 14px;
+  margin:0 0 10px;background:var(--card)}
+details[open]{padding-bottom:14px}
+summary{cursor:pointer;padding:12px 0;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:var(--dim)}
+details[open] summary::before{content:"▾ "}
+summary .meta{font-weight:400}
+
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);
+  color:var(--dim);font-size:12.5px}
+.hint{color:var(--dim);font-size:13px;margin:8px 0 0}
+.hint.warn{color:var(--warn)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>品牌日提醒</h1>
+  <p class="sub">
+    中国大陆餐饮/零售品牌的<strong>周期性优惠</strong>——
+    疯狂星期四、每月 8 号零食会员日这类，做成一订阅就走的日历，
+    每晚 <strong>20:00</strong> 提醒你明天有什么。
+  </p>
+
+  <div class="sub-box">
+    <code id="icsUrl"></code>
+    <button id="copyBtn">复制</button>
+    <a href="https://cdn.jsdelivr.net/gh/Adler862/brand-days@main/deals.ics"><button>下载 ics</button></a>
+  </div>
+  <p class="hint">
+    支持订阅日历的客户端（Google 日历 / Apple 日历 / Outlook）直接粘这个地址；
+    国产手机自带日历多数只能<strong>导入</strong>，下载后用日历打开即可。
+  </p>
+</header>
+
+<h2>今天</h2>
+<div id="upcoming"></div>
+
+<h2>全部数据</h2>
+<div class="searchbar">
+  <input id="q" type="search" placeholder="搜索品牌、优惠内容、条件…">
+  <button id="onlyCore" class="on">只看进日历的</button>
+</div>
+<p class="hint" id="count"></p>
+<table>
+  <thead>
+    <tr><th>品牌</th><th>优惠</th><th>周期</th><th>状态</th><th>来源</th></tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<h2>待核实（18 条）</h2>
+<p class="hint">
+  这些是从网络素材收集来、但<strong>没能找到可靠来源</strong>或与素材不符的条目。
+  它们<strong>不会</strong>进日历——日历是唯一会被信任的东西，错一条就会让人怀疑全部。
+  欢迎按"待办"栏核实后提 PR。
+</p>
+<div id="pending"></div>
+
+<h2>时效型优惠（不进日历）</h2>
+<p class="hint">
+  抢券、限时段优惠多属"到点抢"，日历无法在抢券前叫你，提醒了也是过期信息。
+  本项目采用纯日历方案，因此这类只在此收录备查。
+</p>
+<div id="oneoff"></div>
+
+<footer>
+  共 8 条周期性优惠（7 条进日历）·
+  18 条待核实 ·
+  生成于 2026-10-15 ·
+  <a href="https://github.com/Adler862/brand-days">GitHub</a> ·
+  MIT License<br>
+  数据由人工核对，不保证始终准确；请以商家当前公示为准。
+</footer>
+
+</div>
+<script>window.__BRAND_DAYS__ = {"generatedAt":"2026-10-15","baseUrl":"https://cdn.jsdelivr.net/gh/Adler862/brand-days@main","remindAt":"20:00","windowDays":365,"offers":[{"id":"kfc-crazy-thursday","brand":"肯德基","offer":"疯狂星期四","recur":"周四","recurType":"weekly","recurDays":["thu"],"window":"09:30-23:00","tier":"core","confidence":"verified","conditions":["堂食 9:30-23:00，外送 9:15-22:44","单品 9.9 / 19.9 / 29.9 元，全国限量"],"source":"https://m.bendibao.com/show954854.html","verifiedAt":"2026-10-15","notes":"当天最知名的周期性优惠，日历里的锚点条目","inCalendar":true},{"id":"mcdonalds-monday","brand":"麦当劳","offer":"周一麦麦省，App 领 7 张券","recur":"周一","recurType":"weekly","recurDays":["mon"],"window":"","tier":"core","confidence":"verified","conditions":["需在麦当劳 App 领取","是领券不是直接半价"],"source":"https://www.mcdonalds.com.cn/index/Services/membership-28/member-benefit","verifiedAt":"2026-10-15","notes":"原始素材写成“会员日”，实际是周一发券，力度描述已修正","inCalendar":true},{"id":"pizzahut-scream-wednesday","brand":"必胜客","offer":"尖叫星期三，指定品买一送一","recur":"周三","recurType":"weekly","recurDays":["wed"],"window":"","tier":"core","confidence":"verified","conditions":["需会员","仅指定产品（如 69 元披萨/牛排）"],"source":"https://www.sohu.com/a/946495199_121123870","verifiedAt":"2026-10-15","notes":"","inCalendar":true},{"id":"tastien-tuesday","brand":"塔斯汀","offer":"周二 +1 元双份","recur":"周二","recurType":"weekly","recurDays":["tue"],"window":"","tier":"core","confidence":"verified","conditions":["仅堂食 / 小程序点单","普通外卖不参与","需授权“塔斯汀+”小程序（免费永久会员）"],"source":"https://m.zh.bendibao.com/youhui/89492.shtm","verifiedAt":"2026-10-15","notes":"","inCalendar":true},{"id":"haidilao-wednesday","brand":"海底捞","offer":"周三会员日领菜品券","recur":"周三","recurType":"weekly","recurDays":["wed"],"window":"","tier":"core","confidence":"verified","conditions":["须消费满 80 元","毛肚券须满 150 元","半份菜品五选一"],"source":"http://yc.bendibao.com/news/202593/58634.shtm","verifiedAt":"2026-10-15","notes":"","inCalendar":true},{"id":"haoxianglai-8th","brand":"好想来","offer":"会员日 88 折","recur":"每月 8 号","recurType":"monthly","recurDays":[8],"window":"","tier":"core","confidence":"verified","conditions":["每月 8 号"],"source":"https://caijing.chinadaily.com.cn/a/202601/30/WS697c1dc7a310942cc499d6fb.html","verifiedAt":"2026-10-15","notes":"","inCalendar":true},{"id":"zhaoyiming-8th","brand":"赵一鸣零食","offer":"会员日 88 折","recur":"每月 8 号","recurType":"monthly","recurDays":[8],"window":"","tier":"core","confidence":"verified","conditions":["每月 8 号","特价商品不参与折扣，并非全场"],"source":"https://www.shaoxing.com.cn/xinwen/p/3250289.html","verifiedAt":"2026-10-15","notes":"","inCalendar":true},{"id":"dominoes-tue-thu","brand":"达美乐","offer":"接二连三四，原价比萨七折","recur":"周二、周三、周四","recurType":"weekly","recurDays":["tue","wed","thu"],"window":"","tier":"extended","confidence":"verified","conditions":["仅酥香烤盘 / 经典手拍 / 轻巧薄脆 三种饼底","不与其他优惠同享","仅“指定城市”参与，需确认本地是否覆盖"],"source":"https://baijiahao.baidu.com/s?for=pc&id=1859811790274406693","verifiedAt":"2026-10-15","notes":"原始素材只写了周二/周三，2026-03-16 起已扩为周二三四","inCalendar":false}],"occurrences":[{"date":"2026-10-15","md":"10月15日","week":"四","ids":["kfc-crazy-thursday","dominoes-tue-thu"],"brands":["肯德基","达美乐"]},{"date":"2026-10-16","md":"10月16日","week":"五","ids":[],"brands":[]},{"date":"2026-10-17","md":"10月17日","week":"六","ids":[],"brands":[]},{"date":"2026-10-18","md":"10月18日","week":"日","ids":[],"brands":[]},{"date":"2026-10-19","md":"10月19日","week":"一","ids":["mcdonalds-monday"],"brands":["麦当劳"]},{"date":"2026-10-20","md":"10月20日","week":"二","ids":["tastien-tuesday","dominoes-tue-thu"],"brands":["塔斯汀","达美乐"]},{"date":"2026-10-21","md":"10月21日","week":"三","ids":["pizzahut-scream-wednesday","haidilao-wednesday","dominoes-tue-thu"],"brands":["必胜客","海底捞","达美乐"]},{"date":"2026-10-22","md":"10月22日","week":"四","ids":["kfc-crazy-thursday","dominoes-tue-thu"],"brands":["肯德基","达美乐"]},{"date":"2026-10-23","md":"10月23日","week":"五","ids":[],"brands":[]},{"date":"2026-10-24","md":"10月24日","week":"六","ids":[],"brands":[]},{"date":"2026-10-25","md":"10月25日","week":"日","ids":[],"brands":[]},{"date":"2026-10-26","md":"10月26日","week":"一","ids":["mcdonalds-monday"],"brands":["麦当劳"]},{"date":"2026-10-27","md":"10月27日","week":"二","ids":["tastien-tuesday","dominoes-tue-thu"],"brands":["塔斯汀","达美乐"]},{"date":"2026-10-28","md":"10月28日","week":"三","ids":["pizzahut-scream-wednesday","haidilao-wednesday","dominoes-tue-thu"],"brands":["必胜客","海底捞","达美乐"]},{"date":"2026-10-29","md":"10月29日","week":"四","ids":["kfc-crazy-thursday","dominoes-tue-thu"],"brands":["肯德基","达美乐"]}],"pending":[{"brand":"益禾堂","claim":"会员日半价 / 买一送一","candidateDay":"每月 18 号","reason":"素材把会员日写成“周一、周二”，核查显示会员日是每月 18 号，但官方渠道未直接确认","source":"https://m.douban.com/group/topic/201531430/","todo":"打开益禾堂小程序看 18 号活动公告"},{"brand":"茶百道","claim":"周四全场 88 折 / 周三免费中杯升大杯","candidateDay":"每月 23 号","reason":"“周四 88 折”未获证实；查到的是每月 23 号“超级会员日”（口令答题抢券）","source":"http://haikou.bendibao.com/youhui/2025623/75084.shtm","todo":"核对茶百道小程序 23 号活动"},{"brand":"汉堡王","claim":"周三国王日 9.9 元狠霸王 / 双层芝士牛堡","candidateDay":"周三","reason":"周三是真的，但 9.9 元单品未获证实；2026-09 口径已变为 29.4 元组合送到家","source":"https://post.smzdm.com/p/ad796e7k/","todo":"打开汉堡王 App 看周三实际价格"},{"brand":"德克士","claim":"逢八会员日，加一元得双份","candidateDay":"8 / 18 / 28 号","reason":"两个转载版本口径不一（一版写 8/18/28，另一版只写 18 号买一送一），均非官方","source":"https://www.vgover.com/news/209830","todo":"核对德克士官方渠道"},{"brand":"华莱士","claim":"周五会员日买一送一","candidateDay":"周五","reason":"未查到官方或权威媒体确认，仅见自媒体聚合","source":"未查到","todo":"到店或看华莱士小程序"},{"brand":"袁记串串香","claim":"吃一签送一签","candidateDay":"17 或 18 号（素材自己都不确定）","reason":"活动名“吃一签，送一签”已在公众号推文确认，但具体日期未查到（正文被微信验证码拦截）","source":"https://mp.weixin.qq.com/s?__biz=MzI1MjM2MTU1NA==&mid=2247600668&idx=2&sn=4486c2b8f6f1ef2415244dbb454f6dc3","todo":"翻该公众号历史推文确认日期；注意勿与“袁记云饺”混淆（两个品牌）"},{"brand":"罗森","claim":"周一 15-5 / 周二满 20-4 / 周二周六酸奶鲜奶三件 55 折","candidateDay":"周一 / 周二 / 周六","reason":"三条均未证实。罗森中国【无全国统一会员日】，优惠由各区域公司自行制定（如重庆罗森为周一咖啡 6 折、周三零食满 30-10）","source":"","todo":""},{"brand":"古茗","claim":"每月 20 号会员日","candidateDay":"每月 20 号","reason":"未查到官方确认，仅见自媒体聚合","source":"","todo":""},{"brand":"零食很忙","claim":"每月 7 号会员日","candidateDay":"每月 7 号（存疑，可能为 8 号）","reason":"未确认。仅见微博标题“零食很忙 88 会员日全场 8.8 折”，正文无法读取；与赵一鸣同属鸣鸣很忙集团","source":"","todo":""},{"brand":"零食有鸣","claim":"会员日 6 号","candidateDay":"每月 6 号","reason":"未查到任何可靠来源","source":"","todo":""},{"brand":"察理王子","claim":"第二杯半价","candidateDay":"周二（素材把它排在了周三标题下，自相矛盾）","reason":"未查到该品牌任何周期性活动的可靠来源","source":"","todo":""},{"brand":"阿嫲手作","claim":"免配送费","candidateDay":"周二（素材里同一天重复出现了两次）","reason":"未查到官方周期规则；素材的重复本身就是抄录错误的证据","source":"","todo":""},{"brand":"茶颜悦色","claim":"会员日","candidateDay":"周三","reason":"未查到可靠来源","source":"","todo":""},{"brand":"蛙小侠","claim":"会员日","candidateDay":"周二","reason":"未查到可靠来源","source":"","todo":""},{"brand":"王多鱼","claim":"会员日","candidateDay":"周二","reason":"未查到可靠来源，品牌本身也未能确认","source":"","todo":""},{"brand":"蜜雪冰城","claim":"周一 3.99 元 / 周三满 12-2","candidateDay":"周一 / 周三","reason":"未查到官方固定周期活动，仅见区域性合作（如宁夏青年卡 1 元）","source":"","todo":""},{"brand":"喜茶","claim":"周一免配送费 / 周二免费小料","candidateDay":"周一 / 周二","reason":"未查到官方确认；仅见三份互相抄袭的自媒体聚合","source":"","todo":""},{"brand":"库迪","claim":"（素材未给具体说法）","candidateDay":"未给","reason":"本轮检索无结果","source":"","todo":""}],"oneoff":[{"brand":"星巴克","offer":"蛋糕三明治 7 折，满 30 送美式","conditions":["需学生认证","叠小助手 30-10 的券"],"confidence":"verified","source":"微信素材（未逐条复核）","notes":"建议在星巴克 App 内确认当前口径"},{"brand":"瑞幸","offer":"9.9 元券","conditions":["券驱动、动态调整，非固定周期活动"],"confidence":"verified","source":"https://zgcsb.com/news/xiaoFei/2025-06/03/a_596151.html","notes":"官方曾否认降价，称为随机发券。不要当成“每天都有”"},{"brand":"饿了么","offer":"整点领红包，40-20 券 / 5 折","conditions":["整点开抢，名额有限","周末口径与工作日不同"],"confidence":"unverified","source":"微信素材","notes":"未复核，抢券机制随时调整"},{"brand":"美团","offer":"16 号搜神券 / 18 号满 36-18 / 每天 10:00 与 14:00 有 20-10","conditions":["需学生认证才能抢 20-10"],"confidence":"unverified","source":"微信素材","notes":""},{"brand":"古茗","offer":"12 点公众号抢免单券，另有买一送一","conditions":["需在公众号内抢，名额极少"],"confidence":"unverified","source":"微信素材","notes":""},{"brand":"海底捞","offer":"大学生 69 折（其他时段 88 折）","conditions":["周一至周五 14:00-17:00 及 22:00 后为 69 折","其他时间 88 折","需大学生身份"],"confidence":"unverified","source":"微信素材","notes":"本条是“绑时段”的典型，未来若要做条件型提醒需要单独的时段字段"}]};</script>
+<script>
+const DATA = window.__BRAND_DAYS__;
+
+function el(tag, cls, text){
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+}
+
+function offerById(id){
+  return DATA.offers.find(o => o.id === id);
+}
+
+/* ---------- 今天 + 未来 14 天 ---------- */
+function renderUpcoming(){
+  const box = document.getElementById('upcoming');
+  const today = DATA.occurrences[0];
+  const rest = DATA.occurrences.slice(1, 15);
+
+  // 展示与提醒必须一致：
+  // 有能进日历的条目时只显示这些（它们才真的会发提醒）；
+  // 没有时才显示不进日历的，并注明“仅记录，不会发提醒”。
+  function pick(day){
+    const all = day.ids.map(offerById).filter(Boolean);
+    const cal = all.filter(o => o.inCalendar);
+    return { list: cal.length ? cal : all, note: cal.length ? false : true };
+  }
+
+  // 今天
+  const t = el('div');
+  if (today && today.ids.length){
+    const p = pick(today);
+    p.list.forEach(o => t.appendChild(card(o)));
+    if (p.note){
+      t.appendChild(el('div', 'hint',
+        '今天没有会发提醒的优惠；上面这些不进日历、不会通知，仅作记录。'));
+    }
+  } else {
+    t.appendChild(el('div', 'empty', '今天没有收录的周期性优惠。'));
+  }
+  box.appendChild(t);
+
+  // 未来 14 天
+  const wrap = el('div');
+  rest.forEach(day => {
+    const d = el('div', 'day');
+    const p = pick(day);
+    const head = el('div', 'day-head');
+    const b = el('b', null, `${day.md} 周${day.week}`);
+    head.appendChild(b);
+    if (!p.list.length){
+      head.appendChild(el('span', 'meta', '无'));
+    } else {
+      head.appendChild(el('span', 'meta',
+        p.list.map(o => o.brand).join('、') + (p.note ? '（仅记录）' : '')));
+    }
+    d.appendChild(head);
+    p.list.forEach(o => d.appendChild(card(o, true)));
+    wrap.appendChild(d);
+  });
+  const det = el('details');
+  const sum = el('summary');
+  sum.appendChild(document.createTextNode('未来 14 天'));
+  const m = el('span', 'meta');
+  const n = rest.filter(dd => dd.ids.length).length;
+  m.textContent = `　共 ${n} 天有记录`;
+  sum.appendChild(m);
+  det.appendChild(sum);
+  det.appendChild(wrap);
+  box.appendChild(det);
+}
+
+/* ---------- 卡片 ---------- */
+function card(o, compact){
+  if (!o) return el('div');
+  const c = el('div', compact ? 'card plain' : 'card');
+  const head = el('div', 'card-head');
+  head.appendChild(el('span', 'brand', o.brand));
+  const off = el('span', 'offer', o.offer);
+  head.appendChild(off);
+  if (o.window) head.appendChild(el('span', 'tag', o.window));
+  if (o.tier === 'core') head.appendChild(el('span', 'tag core', '进日历'));
+  else head.appendChild(el('span', 'tag off', '仅记录'));
+  if (o.confidence !== 'verified') head.appendChild(el('span', 'tag warn', '未核实'));
+  c.appendChild(head);
+
+  const meta = el('div', 'meta');
+  meta.style.marginTop = '4px';
+  meta.textContent = o.recur + (o.verifiedAt ? `　核对于 ${o.verifiedAt}` : '');
+  c.appendChild(meta);
+
+  if (!compact && o.conditions.length){
+    const ul = el('ul', 'cond');
+    o.conditions.forEach(x => ul.appendChild(el('li', null, x)));
+    c.appendChild(ul);
+  }
+  if (!compact && o.notes){
+    const p = el('div', 'meta');
+    p.style.marginTop = '6px';
+    p.textContent = '注：' + o.notes;
+    c.appendChild(p);
+  }
+  if (!compact && o.source){
+    const s = el('div', 'src');
+    s.appendChild(document.createTextNode('来源：'));
+    if (/^https?:/.test(o.source)){
+      const a = el('a', null, o.source);
+      a.href = o.source; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      s.appendChild(a);
+    } else {
+      s.appendChild(document.createTextNode(o.source));
+    }
+    c.appendChild(s);
+  }
+  return c;
+}
+
+/* ---------- 搜索与全量列表 ---------- */
+function renderTable(){
+  const q = (document.getElementById('q').value || '').trim().toLowerCase();
+  const onlyCore = document.getElementById('onlyCore').classList.contains('on');
+  const rows = DATA.offers.filter(o => {
+    if (onlyCore && !o.inCalendar) return false;
+    if (!q) return true;
+    return (o.brand + o.offer + o.recur + (o.notes||'') + o.conditions.join(''))
+      .toLowerCase().includes(q);
+  });
+  const tbody = document.getElementById('tbody');
+  tbody.textContent = '';
+  if (!rows.length){
+    const tr = el('tr');
+    const td = el('td', 'empty', '没有匹配的条目。');
+    td.colSpan = 5;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+  rows.forEach(o => {
+    const tr = el('tr');
+    tr.appendChild(el('td', 'nowrap', o.brand));
+    tr.appendChild(el('td', null, o.offer));
+    tr.appendChild(el('td', 'nowrap', o.recur));
+    const tdTags = el('td', 'nowrap');
+    if (o.inCalendar) tdTags.appendChild(el('span', 'tag core', '进日历'));
+    else if (o.confidence !== 'verified') tdTags.appendChild(el('span', 'tag warn', '未核实'));
+    else tdTags.appendChild(el('span', 'tag off', '不进日历'));
+    tr.appendChild(tdTags);
+    const tdSrc = el('td');
+    if (/^https?:/.test(o.source)){
+      const a = el('a', null, '来源');
+      a.href = o.source; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      tdSrc.appendChild(a);
+    } else if (o.source){
+      tdSrc.appendChild(document.createTextNode(o.source));
+    }
+    tr.appendChild(tdSrc);
+    tbody.appendChild(tr);
+  });
+  document.getElementById('count').textContent = `匹配 ${rows.length} 条`;
+}
+
+/* ---------- 待核实 ---------- */
+function renderPending(){
+  const box = document.getElementById('pending');
+  box.textContent = '';
+  if (!DATA.pending.length){
+    box.appendChild(el('div', 'empty', '暂无待核实线索。'));
+    return;
+  }
+  const t = el('table');
+  const thead = el('thead');
+  const hr = el('tr');
+  ['品牌', '素材说法', '线索周期', '为什么没进日历'].forEach(h => hr.appendChild(el('th', null, h)));
+  thead.appendChild(hr);
+  t.appendChild(thead);
+  const tb = el('tbody');
+  DATA.pending.forEach(p => {
+    const tr = el('tr');
+    tr.appendChild(el('td', 'nowrap', p.brand));
+    tr.appendChild(el('td', null, p.claim));
+    tr.appendChild(el('td', 'nowrap', p.candidateDay));
+    const td = el('td');
+    td.appendChild(document.createTextNode(p.reason));
+    if (p.todo){
+      const d = el('div', 'meta');
+      d.style.marginTop = '4px';
+      d.textContent = '待办：' + p.todo;
+      td.appendChild(d);
+    }
+    tr.appendChild(td);
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  box.appendChild(t);
+}
+
+/* ---------- 时效型 ---------- */
+function renderOneoff(){
+  const box = document.getElementById('oneoff');
+  box.textContent = '';
+  if (!DATA.oneoff.length){
+    box.appendChild(el('div', 'empty', '暂无条目。'));
+    return;
+  }
+  DATA.oneoff.forEach(o => {
+    const c = el('div', 'card');
+    const head = el('div', 'card-head');
+    head.appendChild(el('span', 'brand', o.brand));
+    head.appendChild(el('span', 'offer', o.offer));
+    if (o.confidence !== 'verified') head.appendChild(el('span', 'tag warn', '未核实'));
+    c.appendChild(head);
+    if (o.conditions.length){
+      const ul = el('ul', 'cond');
+      o.conditions.forEach(x => ul.appendChild(el('li', null, x)));
+      c.appendChild(ul);
+    }
+    if (o.notes){
+      const p = el('div', 'meta');
+      p.style.marginTop = '6px';
+      p.textContent = '注：' + o.notes;
+      c.appendChild(p);
+    }
+    box.appendChild(c);
+  });
+}
+
+/* ---------- 订阅地址 ---------- */
+function renderSubscribe(){
+  const url = DATA.baseUrl + '/deals.ics';
+  document.getElementById('icsUrl').textContent = url;
+  const btn = document.getElementById('copyBtn');
+  btn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      btn.textContent = '已复制';
+    } catch (e) {
+      // 剪贴板 API 在 file:// 下可能不可用，退回选中文本
+      const r = document.createRange();
+      r.selectNodeContents(document.getElementById('icsUrl'));
+      const s = getSelection();
+      s.removeAllRanges(); s.addRange(r);
+      btn.textContent = '已选中，请手动复制';
+    }
+    setTimeout(() => { btn.textContent = '复制'; }, 2000);
+  });
+}
+
+/* ---------- 初始化 ---------- */
+renderSubscribe();
+renderUpcoming();
+renderTable();
+renderPending();
+renderOneoff();
+document.getElementById('q').addEventListener('input', renderTable);
+document.getElementById('onlyCore').addEventListener('click', e => {
+  e.currentTarget.classList.toggle('on');
+  renderTable();
+});
+</script>
+</body>
+</html>

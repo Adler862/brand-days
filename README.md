@@ -70,6 +70,9 @@ python3 gen.py
 
 ## 功能
 
+- **自带一个网页**：[`index.html`](index.html) 是自包含的单文件（无 CDN、无框架、无外部字体），
+  双击就能看：默认显示"今天"，可搜索全部数据，并分栏展示已确认 / 待核实 / 时效型三类。
+  生成 `deals.ics` 时会一并生成它。
 - **每晚 20:00 提醒次日优惠**：规划类提醒的价值在前一晚，不是当天凌晨。20:00 是你还醒着且能决策的时刻。
 - **每天一条全天摘要兜底**：万一手机不弹 `VALARM` 通知，翻日历仍能看到今天有什么。
 - **显式内嵌 `VTIMEZONE`**：`icalendar` 默认只写 `TZID=Asia/Shanghai` 这个*引用*而不写定义块，
@@ -140,6 +143,7 @@ python3 gen.py
 |---|---|
 | `test_gen.py` | 周期规则、跨年、窗口边界的自测 |
 | `check_ics.py` | ics 结构校验：内嵌时区、VALARM、折叠 ≤75 字节、末尾 CRLF |
+| `check_html.py` | 网页校验：自包含性、内联 JSON、**用最小 DOM 在 node 里真跑一遍渲染**、数字与数据一致 |
 | `roundtrip_ics.py` | 用标准解析器读回，验证折叠无损 |
 | `make_test_ics.py` | 生成几分钟后触发的测试日历，当场验证 `VALARM` 是否真会弹通知 |
 | `verify_on_phone.py` | 通过 adb 读手机日历数据库，与 `deals.ics` 逐条比对 |
