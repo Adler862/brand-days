@@ -6,31 +6,71 @@
 > **纯日历，零推送。** 这是本项目最重要的一个取舍，理由见 §3。
 
 状态：`gen.py` 已跑通；**已在真机（vivo V2324HA / Android 16 / 自带日历）完成端到端验证**。
+**方案已根据真机排查结果调整：窗口从 30 天改为 365 天**，理由见 §0.2。
 网页、`update.ps1`、GitHub Actions 尚未开始，见 §7。
 
 ## 0. 真机验证结论（2026-10-15）
 
+### 0.1 验证通过的部分
+
 | 环节 | 结果 |
 |---|---|
 | ics 生成（时区/VALARM/折叠/序列化） | ✅ 自动校验全部通过 |
-| vivo 系统日历解析 ics 并导入 | ✅ 35 个事件全部入库 |
-| 事件时间与 ics 逐条比对 | ✅ 35/35 一致，**时区无偏移** |
-| 定时提醒 20:00（17 条） | ✅ 全部落在 20:00 |
+| vivo 系统日历解析 ics 并导入 | ✅ 全部事件入库 |
+| 事件时间与 ics 逐条比对 | ✅ 逐条一致，**时区无偏移** |
+| 定时提醒 20:00 | ✅ 全部落在 20:00 |
 | `VALARM` 被解析成系统提醒 | ✅ reminders 表 `minutes=0` |
 | **通知是否真的弹出** | ✅ **实测弹出**，准点、内容正确、带"稍后提醒" |
+| CDN 分发的 LF 版本能否正确解析 | ✅ 与本地 CRLF 版本逐条一致 |
 
 验证方式：`tools/verify_on_phone.py` 直接读手机日历数据库比对；
 `tools/make_test_ics.py` 现场建一条几分钟后触发的事件，观察系统是否真发通知。
 
-**结论：纯日历方案在 vivo 自带日历上成立。**
+### 0.2 方案调整：为什么窗口从 30 天改成 365 天
 
-Android 端实测记录的坑（写在这里省得再踩）：
+真机排查发现两个**改变方案**的事实：
+
+**事实一：手机自带日历不能订阅 ics，只能导入。**
+vivo 日历（`com.bbk.calendar`）只有 `ics.IcsEventInfoActivity` 一个导入入口，
+未注册任何 http/https 日历订阅 intent，系统里也没有 CalDAV 组件。
+这不是 vivo 独有的问题——**国产 ROM 的自带日历普遍如此**。
+
+**事实二：导入时【丢弃 UID】→ 重复导入只会堆重复事件。**
+实测：导入同一份 ics 两次，事件数 35 → 70，
+**35 个时间点每一个都变成 ×2**，没有任何去重。
+`uid` 在整个数据库里搜不到（vivo 自有的 `uid2445` 为 `NULL`）。
+
+这两点合起来意味着：**"订阅 + 自动更新"这条路在目标客户端上走不通**，
+而"频繁手动重导"又会累积重复事件。
+
+**所以调整的是更新单位，而不是去加新依赖：**
+
+| | 30 天窗口（原） | **365 天窗口（现）** |
+|---|---|---|
+| 文件大小 | 20 KB | 约 240 KB |
+| 一年要重导几次 | 12 次 | **0~2 次**（只在数据变化时） |
+| 需要订阅功能吗 | 需要 | **不需要** |
+| 需要装额外 App 吗 | — | **不需要** |
+
+核心理由：**这些优惠的规律本身就以"年"为单位稳定**（疯四、每月 8 号）。
+既然客户端不支持自动更新，那就把更新频率降到"一年一两次"，
+让手动操作变得可以接受，而不是为了绕过客户端限制去引入新 App ——
+那会破坏本项目"零依赖、粘个链接就能用"的前提。
+
+代价：文件更大；"活动停办"这类变化要到下次重新生成才反映。
+
+### 0.3 Android 端实测记录的坑
+
 - vivo 把**全天事件**存成当天 `08:00`（ics 里是 `00:00`）——正常，全天事件本无时刻。
 - `CalendarContract` 的列名**大小写敏感**：投影里出现不存在的列名（如 `allday` 而非
   `allDay`）时，provider **静默返回 0 行**而不报错，极难排查。
-- 日历 App 本体（`com.bbk.calendar`）**不在**电池优化白名单里，只白名单了 provider；
-  实测提醒仍能正常触发，故暂不需要额外设置。若后续发现通知偶发不弹，
-  优先去「设置 → 电池 → 后台耗电管理 → 日历 → 允许后台运行」。
+- `content query` 的**列顺序不固定、NULL 字段会被省略**，解析时必须按字段名取，
+  不能按位置取（本文档作者在此踩了两次）。
+- jsDelivr 会把 CRLF **归一化成 LF**（实测分发 19638 字节 vs 本地 20160 字节），
+  但 vivo 日历对 LF 版本解析完全正确，不影响使用。
+- 日历 App 本体（`com.bbk.calendar`）不在电池优化白名单里，只白名单了 provider；
+  实测提醒仍能正常触发。若后续发现通知偶发不弹，优先去
+  「设置 → 电池 → 后台耗电管理 → 日历 → 允许后台运行」。
 
 
 ---
@@ -106,7 +146,7 @@ Android 端实测记录的坑（写在这里省得再踩）：
 | 某周停办 | ❌ 只能靠 `EXDATE` 一条条排除 |
 | 日期本身没定（"17 号还是 18 号"） | ❌ |
 | 同一天两个不同时段（会员日 + 大学生限时折扣） | ❌ 一个 VEVENT 只能有一条时间规则 |
-| 只要未来 30 天 | ❌ RRULE 是无限重复 |
+| 只要未来 N 天 | ❌ RRULE 是无限重复 |
 
 **关键：RRULE 并没有省掉裁剪逻辑，只是把它从"生成时"挪进了"EXDATE 例外清单"。**
 两套机制并存，代码只会更长。生成方案只有一条代码路径：
@@ -118,7 +158,7 @@ for 未来 window_days 天的每一天:
             写 VEVENT
 ```
 
-代价是文件更大（约 20KB/30 天），对手机日历完全无感。
+代价是文件更大（365 天约 240KB），对手机日历完全无感。
 
 ## 4. 生成器的技术要点（均已实测，非推测）
 
@@ -136,7 +176,7 @@ for 未来 window_days 天的每一天:
 
 ```
 brand-days/
-├── config.yaml            生成配置（窗口/提醒时刻/时区/tier 过滤）
+├── config.yaml            生成配置（窗口/提醒时刻/时区/tier 过滤/专属日历名）
 ├── requirements.txt
 ├── gen.py                 YAML -> deals.ics
 ├── deals.ics              产物（生成物，会被提交，供 jsDelivr 分发）
@@ -145,11 +185,13 @@ brand-days/
 │   ├── pending.yaml       待核实线索        -> 永不进日历
 │   └── oneoff.yaml        时效型            -> 只上网页
 └── tools/
-    ├── check_ics.py         ics 结构校验（时区/VALARM/折叠/UID）
-    ├── test_gen.py          周期规则与边界自测
-    ├── roundtrip_ics.py     往返解析（模拟客户端导入）
-    ├── make_test_ics.py     生成几分钟后触发的测试日历，验证 VALARM 是否会弹
-    └── verify_on_phone.py   读手机日历数据库，与 deals.ics 逐条比对
+    ├── check_ics.py           ics 结构校验（时区/VALARM/折叠/长度）
+    ├── test_gen.py            周期规则与边界自测
+    ├── roundtrip_ics.py       往返解析（模拟客户端导入）
+    ├── make_test_ics.py       生成几分钟后触发的测试日历，验证 VALARM 是否会弹
+    ├── verify_on_phone.py     读手机日历数据库，与 deals.ics 逐条比对
+    ├── verify_subscribe.py    验证手机能否从 CDN 取回 ics 并正确处理
+    └── refresh_on_phone.py    清空【专属日历】并重新导入（一年跑 0~2 次）
 ```
 
 ## 6. 关于初始素材（重要）
@@ -177,22 +219,66 @@ brand-days/
 
 ## 7. 未完成
 
+- [x] ~~手机端实测~~ —— 已完成，见 §0
+- [x] ~~推送 GitHub~~ —— 已完成：https://github.com/Adler862/brand-days
+- [x] ~~窗口改 365 天~~ —— 已完成，见 §0.2
+- [ ] **手机建专属日历「优惠提醒」，把当前 ics 导进去**（见 §9 首次部署步骤）
 - [ ] `index.html` 网页：默认"今天"、搜索、"附近"按钮、已确认/待核实两栏
 - [ ] `update.ps1`：一条命令跑 生成 → diff → commit → push
-- [ ] 每月扫描 `last_verified` 超 90 天的条目，开 issue 提醒复核
-- [ ] GitHub Actions（可选，本地任务已能覆盖）
-- [ ] README.md（中文主）/ README.en.md
-- [ ] 注册 GitHub 仓库并填 `config.yaml` 里的 `base_url`，push 后用 jsDelivr 订阅
-- [x] ~~手机端实测~~ —— 已完成，见 §0
+- [ ] 扫描 `last_verified` 超 90 天的条目并提醒复核
+- [ ] README.md（中文主）/ README.en.md —— **仓库已公开但还没有 README，优先级最高**
+- [ ] 仓库 Description 与 Topics（面向中文搜索）
 
 ## 8. 分发
+
+### 8.1 给别人的（开源分发）
 
 `deals.ics` 提交进仓库，通过 **jsDelivr** 分发：
 
 ```
-https://cdn.jsdelivr.net/gh/<用户名>/brand-days@main/deals.ics
+https://cdn.jsdelivr.net/gh/Adler862/brand-days@main/deals.ics
 ```
 
-原因：`raw.githubusercontent.com` 在国内多数网络不可达，手机日历订阅不到。
+原因：`raw.githubusercontent.com` 在国内多数网络不可达。
 **注意 jsDelivr 有约 12 小时缓存**，改了数据不会立刻生效。
 `config.yaml` 里的 `base_url` 因此做成可配置，必要时可换 Gitee raw 或 Cloudflare Pages。
+
+已实测：手机能访问并下载该地址，拿到的是 LF 版本（CDN 归一化），
+vivo 日历解析完全正确。
+
+### 8.2 给自己用的（手机端）
+
+⚠️ **不要指望"订阅自动更新"** —— 见 §0.2，目标客户端不支持。
+
+正确姿势是**把 ics 当成年历用**：
+
+1. 手机日历里建一个**专属日历**（如「优惠提醒」），名称写进 `config.yaml`
+   的 `phone_calendar_name`
+2. 跑 `python tools/refresh_on_phone.py --push`
+   —— 它会清空专属日历里的事件、把 ics 推到手机
+3. 手机上点开 `Download/brand-days.ics` 导入到「优惠提醒」
+4. 之后**只在数据变化时**重复 2~3 步（一年 0~2 次）
+
+## 9. 首次部署步骤（给未来的自己）
+
+```powershell
+# 1. 生成一年份日历
+python gen.py
+
+# 2. 看手机上有哪些日历，确认专属日历已建好
+python tools/refresh_on_phone.py --list
+
+# 3. 清空专属日历 + 把 ics 推到手机
+python tools/refresh_on_phone.py --push
+
+# 4. 手机上: 文件管理器 -> Download -> brand-days.ics -> 导入到「优惠提醒」
+
+# 5. 核对导入结果（事件数、时间、是否落在专属日历里）
+python tools/verify_on_phone.py
+```
+
+前提：`adb devices` 能看到设备（手机已开 USB 调试并授权）。
+若 `adb` 不在 PATH，用 `--adb` 指定，或设 `ADB` 环境变量。
+
+**每次改完 `data/*.yaml` 之后**：跑 `python gen.py` → 提交推送 →
+需要时再跑上面 2~3 步刷新手机。
