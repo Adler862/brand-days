@@ -1,0 +1,30 @@
+MIT License
+
+Copyright (c) 2026 Adler862
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+关于数据部分（data/ 目录下的 YAML 文件）：
+
+本仓库中的优惠数据由人工从公开渠道收集与核对，仅记录"某品牌在某个周期有某类优惠"
+这类事实性信息，不包含商家的图片、文案或其他受版权保护的内容。
+数据同样以 MIT 许可提供。使用者应自行向商家确认当前有效的优惠规则；
+本项目不保证数据始终准确，也不对因依据本数据做出的消费决策承担责任。
